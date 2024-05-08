@@ -1,6 +1,6 @@
 services:
-  mongo:
-    image: nest-mongo
+  nest-mongo:
+    image: mongo
     restart: always
     ports:
       - 27018:27017
