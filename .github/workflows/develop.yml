@@ -1,0 +1,84 @@
+# This is a basic workflow to help you get started with Actions
+
+name: deploy nest-backend
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    tags:
+      - develop/nest-backend/**
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      - name: 更新.env文件
+        run: |
+          echo MONGO_INITDB_DATABASE=${{secrets.MONGO_INITDB_DATABASE}} >> .env
+          echo MONGO_INITDB_ROOT_USERNAME=${{secrets.MONGO_INITDB_ROOT_USERNAME}} >> .env
+          echo MONGO_INITDB_ROOT_PASSWORD=${{secrets.MONGO_INITDB_ROOT_PASSWORD}} >> .env
+          echo JWT_SECRET=${{secrets.JWT_SECRET}} >> .env
+          echo ACCESS_KEY_ID=${{secrets.ACCESS_KEY_ID}} >> .env
+          echo ACCESS_KEY_SECRET=${{secrets.ACCESS_KEY_SECRET}} >> .env
+
+      - name: Login to ACR
+        uses: aliyun/acr-login@v1
+        with:
+          login-server: https://registry.cn-beijing.aliyuncs.com
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push image
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          echo github.sha: ${{github.sha}}
+          docker build -t registry.cn-beijing.aliyuncs.com/kaixinliu/nest-backend:$IMAGE_TAG .
+          docker push registry.cn-beijing.aliyuncs.com/kaixinliu/nest-backend:$IMAGE_TAG
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          find: '{{IMAGE_TAG}}'
+          replace: ${{ github.sha }}
+          include: docker-compose-prod.yml
+          regex: true
+
+      - name: 创建配置文件夹
+        run: |
+          mkdir nest-backend
+          cp .env docker-compose-prod.yml nest-backend
+          cp -r mongo-entrypoint nest-backend
+
+      - name: 将配置文件夹copy到ssh
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: nest-backend
+          target: /app
+
+      - name: 登录ssh，部署镜像
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script_stop: true
+          script: |
+            cd /app/nest-backend/
+            docker compose -f docker-compose-prod.yml down
+            docker compose -f docker-compose-prod.yml up -d

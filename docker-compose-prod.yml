@@ -1,0 +1,17 @@
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./.docker-volumes/mongo/data:/data/db
+      - ./mongo-entrypoint/:/docker-entrypoint-initdb.d/
+    env_file:
+      - .env
+  backend:
+    image: registry.cn-beijing.aliyuncs.com/kaixinliu/nest-backend:{{IMAGE_TAG}}
+    depends_on:
+      - mongo
+    ports:
+      - 8005:4000
