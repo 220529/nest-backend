@@ -1,17 +1,26 @@
+version: '3.8'
 services:
-  nest-mongo:
+  mongo:
     image: mongo
     restart: always
     ports:
-      - 27018:27017
+      - 27017:27017
     volumes:
       - ./.docker-volumes/mongo/data:/data/db
       - ./mongo-entrypoint/:/docker-entrypoint-initdb.d/
     env_file:
       - .env
+    networks:
+      - backend-network # 将 nest-mongo 连接到 backend-network 网络
+
   backend:
     image: registry.cn-beijing.aliyuncs.com/kaixinliu/nest-backend:{{IMAGE_TAG}}
     depends_on:
-      - nest-mongo
+      - mongo
     ports:
       - 8005:4000
+    networks:
+      - backend-network # 将 backend 连接到 backend-network 网络
+
+networks:
+  backend-network: # 定义名为 backend-network 的网络
