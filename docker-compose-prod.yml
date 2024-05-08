@@ -1,6 +1,6 @@
 services:
   mongo:
-    image: mongo
+    image: nest-mongo
     restart: always
     ports:
       - 27018:27017
@@ -12,6 +12,6 @@ services:
   backend:
     image: registry.cn-beijing.aliyuncs.com/kaixinliu/nest-backend:{{IMAGE_TAG}}
     depends_on:
-      - mongo
+      - nest-mongo
     ports:
       - 8005:4000
