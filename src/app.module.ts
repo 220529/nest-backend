@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConnectOptions, MongooseError, Connection } from 'mongoose';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from '@/auth/auth.module';
 import { CaslModule } from '@/casl/casl.module';
@@ -17,8 +18,6 @@ import { TemplateModule } from '@/template/template.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        const mongoUrl = `mongodb://${configService.get('MONGO_HOST')}:${configService.get('MONGO_PORT')}`;
-        console.log('uri: ', mongoUrl);
         return {
           user: configService.get('MONGO_INITDB_ROOT_USERNAME'),
           pass: configService.get('MONGO_INITDB_ROOT_PASSWORD'),
