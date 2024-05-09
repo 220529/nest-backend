@@ -8,7 +8,7 @@
     "installCommand": "npm install",
     "startCommand": "npm run start",
     "ignore": [],
-    "tag": ["project"],
+    "tags": ["project"],
     "buildPath": ""
   },
   {
@@ -20,7 +20,7 @@
     "installCommand": "npm install",
     "startCommand": "npm run start",
     "ignore": [],
-    "tag": ["project"],
+    "tags": ["project"],
     "buildPath": ""
   }
 ]
