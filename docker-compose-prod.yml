@@ -11,16 +11,17 @@ services:
     env_file:
       - .env
     networks:
-      - nest-network # 将 nest-mongo 连接到 nest-network 网络
+      - nest-network
 
   backend:
     image: registry.cn-beijing.aliyuncs.com/kaixinliu/nest-backend:{{IMAGE_TAG}}
+    restart: always
     depends_on:
       - mongo
     ports:
       - 8005:4000
     networks:
-      - nest-network # 将 backend 连接到 nest-network 网络
+      - nest-network
 
 networks:
-  nest-network: # 定义名为 nest-network 的网络
+  nest-network:

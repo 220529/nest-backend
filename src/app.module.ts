@@ -17,11 +17,13 @@ import { TemplateModule } from '@/template/template.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        const mongoUrl = `mongodb://${configService.get('MONGO_HOST')}:${configService.get('MONGO_PORT')}`;
+        const userName = configService.get('MONGO_INITDB_ROOT_USERNAME');
+        const passWord = configService.get('MONGO_INITDB_ROOT_PASSWORD');
+        const mongoUrl = `mongodb://${userName}:${passWord}@${configService.get('MONGO_HOST')}:${configService.get('MONGO_PORT')}`;
         console.log('mongoUrl: ', mongoUrl);
         return {
-          user: configService.get('MONGO_INITDB_ROOT_USERNAME'),
-          pass: configService.get('MONGO_INITDB_ROOT_PASSWORD'),
+          user: userName,
+          pass: passWord,
           dbName: configService.get('MONGO_INITDB_DATABASE'),
           uri: mongoUrl,
         };
