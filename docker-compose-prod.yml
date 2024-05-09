@@ -15,7 +15,6 @@ services:
 
   nest:
     image: registry.cn-beijing.aliyuncs.com/kaixinliu/nest-backend:{{IMAGE_TAG}}
-    restart: always
     depends_on:
       - mongo
     ports:
