@@ -18,7 +18,7 @@ services:
     depends_on:
       - mongo
     ports:
-      - 8005:4000
+      - 9000:3000
     networks:
       - nest-network
 
