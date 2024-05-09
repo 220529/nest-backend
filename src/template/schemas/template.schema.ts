@@ -30,6 +30,10 @@ export class Template extends Document {
   @Prop()
   ignore: string[];
 
+  // 需要被ejs处理的文件
+  @Prop()
+  ejsPaths: string[];
+
   // 标签（用于分类或标记模板）
   @Prop()
   tags: string[];

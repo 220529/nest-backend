@@ -43,6 +43,11 @@ export class CreateTemplateDto {
   @IsOptional()
   readonly ignore?: string[];
 
+  @ApiProperty({ type: [String], required: false })
+  @IsArray()
+  @IsOptional()
+  readonly ejsPaths?: string[];
+
   @ApiProperty({ type: [String], required: false }) // 标签（用于分类或标记模板）
   @IsArray()
   @IsOptional()
