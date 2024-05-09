@@ -10,14 +10,6 @@ export class Template extends Document {
   @Prop()
   name: string;
 
-  // 包名称
-  @Prop()
-  tempalteName: string;
-
-  // 模板类型（项目模板或组件模板）
-  @Prop()
-  type: 'project' | 'component';
-
   // 包名称（仅适用于项目模板）
   @Prop()
   pkgName: string;
@@ -25,6 +17,14 @@ export class Template extends Document {
   // 包版本（仅适用于项目模板）
   @Prop()
   pkgVersion: string;
+
+  // 模板类型（项目模板或组件模板）
+  @Prop()
+  pkgType: 'project' | 'component';
+
+  // 包路径
+  @Prop()
+  pkgPath: string;
 
   // 忽略的文件或目录列表（仅适用于项目模板）
   @Prop()

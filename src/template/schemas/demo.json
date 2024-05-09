@@ -1,10 +1,10 @@
 [
   {
     "name": "react-18项目模板",
-    "tempalteName": "react-app",
+    "pkgPath": "react-app",
     "pkgName": "@ns-library/template",
     "pkgVersion": "1.0.0",
-    "type": "project",
+    "pkgType": "project",
     "installCommand": "npm install",
     "startCommand": "npm run start",
     "ignore": [],
@@ -13,10 +13,10 @@
   },
   {
     "name": "vue-3项目模板",
-    "tempalteName": "vue-app",
+    "pkgPath": "vue-app",
     "pkgName": "@ns-library/template",
     "pkgVersion": "1.0.0",
-    "type": "project",
+    "pkgType": "project",
     "installCommand": "npm install",
     "startCommand": "npm run start",
     "ignore": [],

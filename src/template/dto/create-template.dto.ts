@@ -18,14 +18,14 @@ export class CreateTemplateDto {
   @IsNotEmpty()
   readonly name: string;
 
-  @ApiProperty() // 包名称
+  @ApiProperty() // 包路径
   @IsString()
   @IsNotEmpty()
-  readonly tempalteName: string;
+  readonly pkgPath: string;
 
   @ApiProperty({ enum: TemplateType }) // 模板类型（项目模板或组件模板）
   @IsEnum(TemplateType)
-  readonly type: TemplateType;
+  readonly pkgType: TemplateType;
 
   @ApiProperty() // 包名称（仅适用于项目模板）
   @IsString()
