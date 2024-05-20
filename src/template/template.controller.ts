@@ -6,6 +6,7 @@ import {
   Body,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from '@/decorators/public.decorator';
@@ -37,6 +38,11 @@ export class TemplateController {
     @Body() UpdateTemplateDto: UpdateTemplateDto,
   ): Promise<Template> {
     return this.TemplateService.update(id, UpdateTemplateDto);
+  }
+
+  @Get('sa')
+  findSa(@Query() query) {
+    return this.TemplateService.updateSa(query);
   }
 
   @Get(':id')
