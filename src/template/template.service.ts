@@ -1,6 +1,7 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { getCurrentDateFormatted } from '@/utill';
 import { Template, TemplateDocument } from './schemas/template.schema';
 import { CreateTemplateDto } from './dto/create-template.dto';
 import { UpdateTemplateDto } from './dto/update-template.dto';
@@ -64,12 +65,37 @@ export class TemplateService {
   }
 
   async updateSa(query) {
+    const params = JSON.parse(query.data);
+    const fields = [
+      'userId',
+      'visitorId',
+      'appId',
+      'pid',
+      'aid',
+      'ua',
+      'url',
+      'referrer',
+      'timestamp',
+      'args',
+    ];
+    const data = fields
+      .map((field) => {
+        const value = params[field] || '';
+        return `'${typeof value === 'string' ? value : JSON.stringify(value)}'`;
+      })
+      .join(',');
+    const sql = `
+    INSERT INTO library_project.sa
+    PARTITION (datatime = '${getCurrentDateFormatted()}')
+    VALUES (
+      '${query.plat}', ${data}
+    );`;
     // 准备传递给 Python 脚本的数据
     execCommand({
       cmd: 'python3',
-      args: [path.join(__dirname, 'insert.py'), query.plat, query.data],
+      args: [path.join(__dirname, 'sql.py'), sql],
       options: { stdio: 'inherit' },
     });
-    return Promise.resolve({ cmd: 'python3', query });
+    return query.plat;
   }
 }

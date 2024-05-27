@@ -6,7 +6,7 @@
     "deleteOutDir": true,
     "assets": [
       {
-        "include": "template/insert.py",
+        "include": "template/sql.py",
         "outDir": "dist"
       }
     ]

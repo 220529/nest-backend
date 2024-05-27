@@ -41,7 +41,7 @@ export class TemplateController {
   }
 
   @Get('sa')
-  findSa(@Query() query) {
+  updateSa(@Query() query) {
     return this.TemplateService.updateSa(query);
   }
 
