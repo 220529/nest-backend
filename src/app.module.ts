@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ConnectOptions, MongooseError, Connection } from 'mongoose';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from '@/auth/auth.module';
 import { CaslModule } from '@/casl/casl.module';
 import { UserModule } from '@/user/user.module';
+import { OssModule } from '@/oss/oss.module';
 import { TemplateModule } from '@/template/template.module';
 
 @Module({
@@ -29,6 +29,7 @@ import { TemplateModule } from '@/template/template.module';
     AuthModule,
     CaslModule,
     UserModule,
+    OssModule,
     TemplateModule,
   ],
 })

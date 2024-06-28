@@ -13,7 +13,9 @@ async function bootstrap() {
   // 响应拦截器
   app.useGlobalInterceptors(new TransformInterceptor());
   // 全局路由前缀
-  app.setGlobalPrefix('v1');
+  app.setGlobalPrefix('api');
+
+  app.enableCors();
 
   const options = new DocumentBuilder().build();
   const document = SwaggerModule.createDocument(app, options);

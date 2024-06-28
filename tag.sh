@@ -7,7 +7,7 @@ projectName=$(basename $(pwd))
 dateString=$(date +"%Y-%m-%d/%H-%M-%S")
 
 # 打印生成的标签名
-tagName="$projectName/template/$dateString"
+tagName="$projectName/master/$dateString"
 echo "生成的标签名: $tagName"
 
 # 获取项目的 Git 仓库地址
